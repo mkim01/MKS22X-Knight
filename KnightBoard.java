@@ -3,30 +3,35 @@ public class KnightBoard{
   private int[][] board;
   private int order = 1;
   private int area = board.length * board[0].length;
-  private int posXmove[8] = {1, -1, -2, -2, -1,  1, 2,  2};
-  private int posYmove[8] = {2,  2,  1, -1, -2, -2, 1, -1};
+  private int[] posXmove = {1, -1, -2, -2, -1,  1, 2,  2};
+  private int[] posYmove = {2,  2,  1, -1, -2, -2, 1, -1};
 
   public KnightBoard(int startingRows,int startingCols){
-    board = new int [startingRows][startingCols];
-    order  = 0;
     if (startingRows <= 0 || startingCols <= 0){
       throw new IllegalStateException();
+    }
+    board = new int [startingRows][startingCols];
+    for(int i = 0; i < startingRows; i++){
+      for(int j = 0; j< startingCols; j++){
+        board[i][j] = 0;
+      }
     }
   }
 
   public String toString(){
-    // String result = "";
-    // for(int i = 0 ; i < startingRows; i++){
-    //   result += "\n";
-    //   for(int j = 0; j < startingCols; j++){
-    //     if(board[i][j] == ){;
-    //     }
-    //     else{
-    //       board[i][j]
-    //     }
-    //   }
-    // }
-    return "";
+    String result = "";
+    for(int i = 0 ; i < board.length; i++){
+      result += "\n";
+      for(int j = 0; j < board[0].length; j++){
+        if (area >= 10 || board[i][j] < 10){
+          result += "" + board[i][j];
+        }
+        else{
+          result += " "+ board[i][j];
+      }
+    }
+  }
+    return result;
   }
 
   public boolean addKnights(int row, int col){
@@ -60,7 +65,7 @@ public class KnightBoard{
         }
       }
     }
-    if (startingRow =< 0 || startingCol =< 0){
+    if (startingRow <= 0 || startingCol <= 0){
       throw new IllegalArgumentException();
     }
     //  return solveH(startingrow, startingCol, area);
@@ -76,7 +81,7 @@ public class KnightBoard{
     }
     for(int i = 0; i < 8; i++){
      if (addKnights(row, col)){
-        solveH(row + posXmove[i], col + posYmove[i], moveNumber + 1){
+        solveH(row + posXmove[i], col + posYmove[i], moveNumber + 1);
       }
     else{
       removeKnights(row,col);
@@ -84,9 +89,13 @@ public class KnightBoard{
     }
       return false;
   }
-}
 
   public int countSolutions(int startingRow, int startingCol){
       return 0;
     }
-  }
+
+  // public static void main(String[] args){
+  //   KnightBoard board = new KnightBoard(5,5);
+  //   System.out.println(board);
+  // }
+}
