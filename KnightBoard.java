@@ -2,7 +2,7 @@
 public class KnightBoard{
   private int[][] board;
   private int order = 1;
-  //private int area = board.length * board[0].length;
+  private int area;
   private int[] posXmove = {1, -1, -2, -2, -1,  1, 2,  2};
   private int[] posYmove = {2,  2,  1, -1, -2, -2, 1, -1};
 
@@ -16,6 +16,7 @@ public class KnightBoard{
         board[i][j] = 0;
       }
     }
+    area  = board.length * board[0].length;
   }
 
   public String toString(){
@@ -23,16 +24,16 @@ public class KnightBoard{
     for(int i = 0 ; i < board.length; i++){
       for(int j = 0; j < board[i].length; j++){
         result += " ";
-        if (board[i][j] == 0){
-          result += "_";
-        }
-        else{
-          if(board.length * board[0].length >= 10 || board[i][j] < 10){
-            result += "" + board[i][j];
+        if (area >= 10){
+          if (board[i][j] >= 10){
+            result += board[i][j];
           }
           else{
             result += " " + board[i][j];
           }
+        }
+        else{
+          result += " " + board[i][j];
         }
       }
         result += "\n";
@@ -41,8 +42,8 @@ public class KnightBoard{
   }
 
   public boolean addKnights(int row, int col){
-    if (row < 0 || col < 0 || row > board.length || col > board[0].length){
-      throw new IllegalArgumentException();
+    if (row < 0 || col < 0 || row >= board.length || col >= board[0].length){
+      return false;
     }
     if (board[row][col] == 0){
       board[row][col] = order;
@@ -54,7 +55,7 @@ public class KnightBoard{
 
   public boolean removeKnights(int row, int col){
     if (row < 0 || col < 0){
-      throw new IllegalArgumentException();
+      return false;
     }
     if (board[row][col] != 0){
       board[row][col] = 0;
@@ -80,7 +81,7 @@ public class KnightBoard{
     }
 
   private boolean solveH(int row, int col, int moveNumber){
-    if (moveNumber == board.length * board[0].length){
+    if (moveNumber == area){
       return true;
     }
     for (int i = 0; i < 8; i++){
@@ -100,7 +101,7 @@ public class KnightBoard{
 
    public static void main(String[] args){
     KnightBoard board = new KnightBoard(5,5);
-  //  System.out.println(board.solve(0,0));
+    System.out.println(board.solve(4,4));
     System.out.println(board);
   }
 }
