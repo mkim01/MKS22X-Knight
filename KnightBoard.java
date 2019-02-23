@@ -54,7 +54,7 @@ public class KnightBoard{
     }
 
   public boolean removeKnights(int row, int col){
-    if (row < 0 || col < 0){
+    if (row < 0 || col < 0 || row >= board.length || col >= board[0].length){
       return false;
     }
     if (board[row][col] != 0){
@@ -96,12 +96,31 @@ public class KnightBoard{
   }
 
   public int countSolutions(int startingRow, int startingCol){
-      return 0;
+    return countH(startingRow, startingCol, 0);
     }
 
+  public int countH(int row, int col, int moveNumber){
+      int count = 0;
+      if (moveNumber >= area){
+        removeKnights(row,col);
+        return 1;
+      }
+      else{
+        for(int i = 0; i < 8; i++){
+          if(addKnights(row,col)){
+            count += countH(row + posXmove[i], col + posYmove[i], moveNumber + 1);
+          }
+        removeKnights(row,col);
+      }
+    }
+    return count;
+  }
+
+
    public static void main(String[] args){
-    KnightBoard board = new KnightBoard(5,5);
-    System.out.println(board.solve(4,4));
+    KnightBoard board = new KnightBoard(3,4);
+  //  System.out.println(board.solve(0,0));
+    System.out.println(board.countSolutions(0,0));
     System.out.println(board);
   }
 }
