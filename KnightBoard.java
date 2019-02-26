@@ -114,16 +114,40 @@ public class KnightBoard{
       return count;
   }
 
+  public void optcountmoves(int row, int col, ArrayList<Integer> nextMoves){
+    int[][] smove;
+    if(addKnights(row,col,moveNumber)){
+      if (moveNumber == area){
+        removeKnights(row,col);
+        return 1;
+      }
+      else{
+        for(int i = 0; i < 8; i++){
+          if (!(row < 0 || col < 0 || row >= board.length || col >= board[0].length)){
+            smove = board[row + posXmove[i]][col + posYmove[i]]
+            nextMoves.add(smove);
+            smove = 0;
+          }
+        }
+        if  (smoves != board[i]
+      }
+    }
+    //sort the arraylist
+    // for (int i = 0; i < nextMoves.size(); i += 2;){
+    //   for (int j = 0; j <nextMoves.size(); j++){
+    //     nextMoves[i] = nextMoves[j];
+    //   }
+    // }
+    }
 
    public static void main(String[] args){
-    KnightBoard board = new KnightBoard(5,5);
+    KnightBoard board = new KnightBoard(10,10);
   //   System.out.println(board.addKnights(5,0));
   //   System.out.println(board);
   //   System.out.println(board.addKnights(2,0));
   //   System.out.println(board);
-  // //  System.out.println(board.solve(0,0));
-
-    System.out.println(board.countSolutions(0,0));
+  //   System.out.println(board.solve(0,0));
+  //  System.out.println(board.countSolutions(0,0));
     System.out.println(board);
   }
 }
