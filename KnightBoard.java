@@ -1,7 +1,6 @@
 
 public class KnightBoard{
   private int[][] board;
-  private int order = 1;
   private int area;
   private int[] posXmove = {1, -1, -2, -2, -1,  1, 2,  2};
   private int[] posYmove = {2,  2,  1, -1, -2, -2, 1, -1};
@@ -41,13 +40,12 @@ public class KnightBoard{
       return result;
   }
 
-  public boolean addKnights(int row, int col){
+  public boolean addKnights(int row, int col, int movenumber){
     if (row < 0 || col < 0 || row >= board.length || col >= board[0].length){
       return false;
     }
     if (board[row][col] == 0){
-      board[row][col] = order;
-      order ++;
+      board[row][col] = movenumber;
       return true;
     }
       return false;
@@ -59,7 +57,6 @@ public class KnightBoard{
     }
     if (board[row][col] != 0){
       board[row][col] = 0;
-      order --;
       return true;
     }
     return false;
@@ -85,7 +82,7 @@ public class KnightBoard{
       return true;
     }
     for (int i = 0; i < 8; i++){
-      if (addKnights(row, col)){
+      if (addKnights(row, col,moveNumber)){
         if (solveH(row + posXmove[i], col + posYmove[i], moveNumber + 1)){
             return true;
           }
@@ -96,30 +93,36 @@ public class KnightBoard{
   }
 
   public int countSolutions(int startingRow, int startingCol){
-    return countH(startingRow, startingCol, 0);
+    return countH(startingRow, startingCol, 1);
     }
 
   public int countH(int row, int col, int moveNumber){
-      int count = 0;
-      if (moveNumber >= area){
+    int count = 0;
+    if(addKnights(row,col,moveNumber)){
+      if (moveNumber == area){
         removeKnights(row,col);
         return 1;
       }
       else{
         for(int i = 0; i < 8; i++){
-          if(addKnights(row,col)){
             count += countH(row + posXmove[i], col + posYmove[i], moveNumber + 1);
+    //        removeKnights(row + posXmove[i], col + posYmove[i]);
           }
+        }
         removeKnights(row,col);
-      }
     }
-    return count;
+      return count;
   }
 
 
    public static void main(String[] args){
-    KnightBoard board = new KnightBoard(3,4);
-  //  System.out.println(board.solve(0,0));
+    KnightBoard board = new KnightBoard(5,5);
+  //   System.out.println(board.addKnights(5,0));
+  //   System.out.println(board);
+  //   System.out.println(board.addKnights(2,0));
+  //   System.out.println(board);
+  // //  System.out.println(board.solve(0,0));
+
     System.out.println(board.countSolutions(0,0));
     System.out.println(board);
   }
