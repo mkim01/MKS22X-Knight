@@ -1,4 +1,4 @@
-
+import java.util.ArrayList;
 public class KnightBoard{
   private int[][] board;
   private int area;
@@ -40,7 +40,7 @@ public class KnightBoard{
       return result;
   }
 
-  public boolean addKnights(int row, int col, int movenumber){
+  private boolean addKnights(int row, int col, int movenumber){
     if (row < 0 || col < 0 || row >= board.length || col >= board[0].length){
       return false;
     }
@@ -51,7 +51,7 @@ public class KnightBoard{
       return false;
     }
 
-  public boolean removeKnights(int row, int col){
+  private boolean removeKnights(int row, int col){
     if (row < 0 || col < 0 || row >= board.length || col >= board[0].length){
       return false;
     }
@@ -63,17 +63,9 @@ public class KnightBoard{
   }
 
   public boolean solve(int startingRow, int startingCol){
-    // for(int i = 0; i < startingRow; i++){
-    //   for(int j = 0; j< startingCol; j++){
-    //     if (board[i][j] != 0){
-    //       throw new IllegalStateException();
-    //     }
-    //   }
-    // }
-    // if (startingRow < 0 || startingCol < 0){
-    //   throw new IllegalArgumentException();
-    // }
-    //  return solveH(startingrow, startingCol, area);
+     if (startingRow < 0 || startingCol < 0 || startingRow >= data[0].length || startingCol >= data.length){
+       throw new IllegalArgumentException();
+     }
       return solveH(startingRow, startingCol, 0);
     }
 
@@ -94,10 +86,13 @@ public class KnightBoard{
 
   public int countSolutions(int startingRow, int startingCol){
     return countH(startingRow, startingCol, 1);
-    }
+  }
 
-  public int countH(int row, int col, int moveNumber){
+  private int countH(int row, int col, int moveNumber){
     int count = 0;
+    if (startingRow < 0 || startingCol < 0 || startingRow >= data[0].length || startingCol >= data.length){
+      throw new IllegalArgumentException();
+    }
     if(addKnights(row,col,moveNumber)){
       if (moveNumber == area){
         removeKnights(row,col);
@@ -114,24 +109,29 @@ public class KnightBoard{
       return count;
   }
 
-  public void optcountmoves(int row, int col, ArrayList<Integer> nextMoves){
-    int[][] smove;
-    if(addKnights(row,col,moveNumber)){
-      if (moveNumber == area){
-        removeKnights(row,col);
-        return 1;
-      }
-      else{
-        for(int i = 0; i < 8; i++){
-          if (!(row < 0 || col < 0 || row >= board.length || col >= board[0].length)){
-            smove = board[row + posXmove[i]][col + posYmove[i]]
-            nextMoves.add(smove);
-            smove = 0;
-          }
-        }
-        if  (smoves != board[i]
-      }
-    }
+  public void optcountmoves(int row, int col, ArrayList<Integer[][]> nextMoves){
+    // int priority;
+    // int xvals;
+    // int yvals;
+    // for (int i = 0; i < 8; i++){
+    //   priority[i] = nextMoves.get()
+    // }
+    // if(addKnights(row,col,moveNumber)){
+    //   if (moveNumber == area){
+    //     removeKnights(row,col);
+    //     return 1;
+    //   }
+    //   else{
+    //     for(int i = 0; i < 8; i++){
+    //       if (!(row < 0 || col < 0 || row >= board.length || col >= board[0].length)){
+    //         smove = board[row + posXmove[i]][col + posYmove[i]]
+    //         nextMoves.add(smove);
+    //         smove = 0;
+    //       }
+    //     }
+    //     if  (smoves != board[i]
+    //   }
+    // }
     //sort the arraylist
     // for (int i = 0; i < nextMoves.size(); i += 2;){
     //   for (int j = 0; j <nextMoves.size(); j++){
@@ -142,11 +142,6 @@ public class KnightBoard{
 
    public static void main(String[] args){
     KnightBoard board = new KnightBoard(10,10);
-  //   System.out.println(board.addKnights(5,0));
-  //   System.out.println(board);
-  //   System.out.println(board.addKnights(2,0));
-  //   System.out.println(board);
-  //   System.out.println(board.solve(0,0));
   //  System.out.println(board.countSolutions(0,0));
     System.out.println(board);
   }
