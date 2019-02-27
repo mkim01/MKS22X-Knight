@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 public class KnightBoard{
   private int[][] board;
+  private int[][] optimized;
   private int area;
   private int[] posXmove = {1, -1, -2, -2, -1,  1, 2,  2};
   private int[] posYmove = {2,  2,  1, -1, -2, -2, 1, -1};
@@ -132,34 +133,66 @@ public class KnightBoard{
       return count;
   }
 
-  public void optsolve(int row, int col, ArrayList<Integer[]> nextMoves){
-  //   int priority;
-  //   int xvals;
-  //   int yvals;
-  //   for(int i = 0; i < 8; i++){
-  //       int[] holder = new int[3];
-  //       if (!(row < 0 || col < 0 || row >= board.length || col >= board[0].length)){
-  //         priority = board[row + posXmove[i]][col + posYmove[i]];
-  //         holder.add(priority);
-  //         nextMoves.add(holder);
-  //         smove = 0;
-  //   }
-  // }
-}
+  public void optsolve(int row, int col, int movenumber){
+    // ArrayList<> pmoves = new ArrayList<>();
+    // for(int i = 0; i < 8; i++){
+    //     if (!(row < 0 || col < 0 || row >= board.length || col >= board[0].length)){
+    //       int[] holder = new int[3];
+    //       holder[0] = row;
+    //       holder[1] = col;
+    //       holder[2] =
+    //       pmoves.add(holder);
+    //     }
+    //     else{
+    //       holder[2] =
+    //       pmoves.add(holder);
+    //     }
+    // }
+    //
+    // for(int j = 0; j < pmoves.size(); j++){
+    //   pmoves.get(i)[2] =
+    // }
+    // if ()
+    // // 2 3 4 3 2     2 0 2
+    // // 3 4 6 4 3     2 0 2
+    // // 4 6 8 6 4     2 0 2
+    // // 3 4 6 4 3
+    // // 2 3 4 3 2
+  }
+
+    private String toStringopt(int[][] board){
+      String result = "";
+      for(int i = 0; i < board.length; i++){
+        for(int j = 0; j < board[0].length; j++){
+          int count = 0;
+          for (int k = 0; k < 8; k++){
+            int row = i;
+            int col = j;
+            if (!(row < 0 || col < 0 || row >= board.length || col >= board[0].length)){
+              count++;
+            }
+          }
+          result += count;
+        }
+        result += "\n";
+      }
+      return result;
+    }
 
     public static void sort(int[] ary){
-      //selectionsort
-      // int target = ary[i];
-      // int t_idx = i;
-      // for (int j = i; j < ary.length; j++){
-      //   if (ary[j] < target){
-      //     target = ary[j];
-      //     t_idx = j;
-      //   }
-      // }
-      //   ary[t_idx] = ary[i];
-      //   ary[i] = target;
+      for(int i = 0; i < ary.length; i++){
+        int target = ary[i];
+        int t_idx = i;
+        for (int j = i; j < ary.length; j++){
+          if (ary[j] < target){
+            target = ary[j];
+            t_idx = j;
+          }
+        }
+          ary[t_idx] = ary[i];
+          ary[i] = target;
       }
+    }
 
     public static void runTest(int i){
       KnightBoard b;
@@ -192,7 +225,7 @@ public class KnightBoard{
      // for (int i = 0; i < 5; i++){
      //   runTest(i);
      // }
-     KnightBoard board = new KnightBoard(5,5);
+     KnightBoard board = new KnightBoard(3,4);
      System.out.println(board.solve(0,0));
      System.out.println(board);
   }
