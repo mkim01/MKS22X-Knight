@@ -44,11 +44,13 @@ public class KnightBoard{
     if (row < 0 || col < 0 || row >= board.length || col >= board[0].length){
       return false;
     }
-    if (board[row][col] == 0){
+    if (board[row][col] != 0){
+      return false;
+    }
+    else{
       board[row][col] = movenumber;
       return true;
-    }
-      return false;
+      }
     }
 
   private boolean removeKnights(int row, int col){
@@ -84,15 +86,15 @@ public class KnightBoard{
      if (!checkstate()){
        throw new IllegalStateException();
      }
-      return solveH(startingRow, startingCol, 0);
+      return solveH(startingRow, startingCol, 1);
     }
 
   private boolean solveH(int row, int col, int moveNumber){
-    if (moveNumber == area){
+    if (moveNumber == area + 1){
       return true;
     }
     for (int i = 0; i < 8; i++){
-      if (addKnights(row, col,moveNumber)){
+      if (addKnights(row, col, moveNumber)){
         if (solveH(row + posXmove[i], col + posYmove[i], moveNumber + 1)){
             return true;
           }
@@ -131,32 +133,32 @@ public class KnightBoard{
   }
 
   public void optsolve(int row, int col, ArrayList<Integer[]> nextMoves){
-    // int priority;
-    // int xvals;
-    // int yvals;
-    // for(int i = 0; i < 8; i++){
-    //     int[] holder = new int[3];
-    //     if (!(row < 0 || col < 0 || row >= board.length || col >= board[0].length)){
-    //       xvars
-    //       priority = board[row + posXmove[i]][col + posYmove[i]]
-    //       nextMoves.add(smove);
-    //       smove = 0;
-    }
-  }
+  //   int priority;
+  //   int xvals;
+  //   int yvals;
+  //   for(int i = 0; i < 8; i++){
+  //       int[] holder = new int[3];
+  //       if (!(row < 0 || col < 0 || row >= board.length || col >= board[0].length)){
+  //         priority = board[row + posXmove[i]][col + posYmove[i]];
+  //         holder.add(priority);
+  //         nextMoves.add(holder);
+  //         smove = 0;
+  //   }
+  // }
 }
 
     public static void sort(int[] ary){
       //selectionsort
-      int target = ary[i];
-      int t_idx = i;
-      for (int j = i; j < ary.length; j++){
-        if (ary[j] < target){
-          target = ary[j];
-          t_idx = j;
-        }
-      }
-        ary[t_idx] = ary[i];
-        ary[i] = target;
+      // int target = ary[i];
+      // int t_idx = i;
+      // for (int j = i; j < ary.length; j++){
+      //   if (ary[j] < target){
+      //     target = ary[j];
+      //     t_idx = j;
+      //   }
+      // }
+      //   ary[t_idx] = ary[i];
+      //   ary[i] = target;
       }
 
     public static void runTest(int i){
@@ -190,8 +192,8 @@ public class KnightBoard{
      // for (int i = 0; i < 5; i++){
      //   runTest(i);
      // }
-  //   KnightBoard board = new KnightBoard(10,10);
-  // //  System.out.println(board.countSolutions(0,0));
-  //   System.out.println(board);
+     KnightBoard board = new KnightBoard(5,5);
+     System.out.println(board.solve(0,0));
+     System.out.println(board);
   }
 }
