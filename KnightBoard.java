@@ -62,9 +62,27 @@ public class KnightBoard{
     return false;
   }
 
+  public boolean checkstate(){
+    int num = 0;
+    for (int i = 0; i < board.length; i++){
+      for (int j = 0; j <board[0].length; j++){
+        if (board[i][j] != 0){
+          num++;
+        }
+      }
+    }
+    if (num > 0){
+      return false;
+    }
+    return true;
+  }
+
   public boolean solve(int startingRow, int startingCol){
-     if (startingRow < 0 || startingCol < 0 || startingRow >= data[0].length || startingCol >= data.length){
+     if (startingRow < 0 || startingCol < 0 || startingRow >= board[0].length || startingCol >= board.length){
        throw new IllegalArgumentException();
+     }
+     if (!checkstate()){
+       throw new IllegalStateException();
      }
       return solveH(startingRow, startingCol, 0);
     }
@@ -85,14 +103,17 @@ public class KnightBoard{
   }
 
   public int countSolutions(int startingRow, int startingCol){
+    if (startingRow < 0 || startingCol < 0 || startingRow >= board[0].length || startingCol >= board.length){
+      throw new IllegalArgumentException();
+    }
+    if (!checkstate()){
+      throw new IllegalStateException();
+    }
     return countH(startingRow, startingCol, 1);
   }
 
   private int countH(int row, int col, int moveNumber){
     int count = 0;
-    if (startingRow < 0 || startingCol < 0 || startingRow >= data[0].length || startingCol >= data.length){
-      throw new IllegalArgumentException();
-    }
     if(addKnights(row,col,moveNumber)){
       if (moveNumber == area){
         removeKnights(row,col);
@@ -140,9 +161,39 @@ public class KnightBoard{
     // }
     }
 
+    public static void runTest(int i){
+      KnightBoard b;
+      int[]m =   {4,5,5,5,5};
+      int[]n =   {4,5,4,5,5};
+      int[]startx = {0,0,0,1,2};
+      int[]starty = {0,0,0,1,2};
+      int[]answers = {0,304,32,56,64};
+      if(i >= 0 ){
+        try{
+          int correct = answers[i];
+          b = new KnightBoard(m[i%m.length],n[i%m.length]);
+
+          int ans  = b.countSolutions(startx[i],starty[i]);
+
+          if(correct==ans){
+            System.out.println("PASS board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans);
+          }else{
+            System.out.println("FAIL board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans+" vs "+correct);
+          }
+        }catch(Exception e){
+          System.out.println("FAIL Exception case: "+i);
+
+        }
+      }
+    }
+
+
    public static void main(String[] args){
-    KnightBoard board = new KnightBoard(10,10);
-  //  System.out.println(board.countSolutions(0,0));
-    System.out.println(board);
+     for (int i = 0; i < 5; i++){
+       runTest(i);
+     }
+  //   KnightBoard board = new KnightBoard(10,10);
+  // //  System.out.println(board.countSolutions(0,0));
+  //   System.out.println(board);
   }
 }
