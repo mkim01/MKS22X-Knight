@@ -130,36 +130,34 @@ public class KnightBoard{
       return count;
   }
 
-  public void optcountmoves(int row, int col, ArrayList<Integer[][]> nextMoves){
+  public void optsolve(int row, int col, ArrayList<Integer[]> nextMoves){
     // int priority;
     // int xvals;
     // int yvals;
-    // for (int i = 0; i < 8; i++){
-    //   priority[i] = nextMoves.get()
-    // }
-    // if(addKnights(row,col,moveNumber)){
-    //   if (moveNumber == area){
-    //     removeKnights(row,col);
-    //     return 1;
-    //   }
-    //   else{
-    //     for(int i = 0; i < 8; i++){
-    //       if (!(row < 0 || col < 0 || row >= board.length || col >= board[0].length)){
-    //         smove = board[row + posXmove[i]][col + posYmove[i]]
-    //         nextMoves.add(smove);
-    //         smove = 0;
-    //       }
-    //     }
-    //     if  (smoves != board[i]
-    //   }
-    // }
-    //sort the arraylist
-    // for (int i = 0; i < nextMoves.size(); i += 2;){
-    //   for (int j = 0; j <nextMoves.size(); j++){
-    //     nextMoves[i] = nextMoves[j];
-    //   }
-    // }
+    // for(int i = 0; i < 8; i++){
+    //     int[] holder = new int[3];
+    //     if (!(row < 0 || col < 0 || row >= board.length || col >= board[0].length)){
+    //       xvars
+    //       priority = board[row + posXmove[i]][col + posYmove[i]]
+    //       nextMoves.add(smove);
+    //       smove = 0;
     }
+  }
+}
+
+    public static void sort(int[] ary){
+      //selectionsort
+      int target = ary[i];
+      int t_idx = i;
+      for (int j = i; j < ary.length; j++){
+        if (ary[j] < target){
+          target = ary[j];
+          t_idx = j;
+        }
+      }
+        ary[t_idx] = ary[i];
+        ary[i] = target;
+      }
 
     public static void runTest(int i){
       KnightBoard b;
@@ -189,9 +187,9 @@ public class KnightBoard{
 
 
    public static void main(String[] args){
-     for (int i = 0; i < 5; i++){
-       runTest(i);
-     }
+     // for (int i = 0; i < 5; i++){
+     //   runTest(i);
+     // }
   //   KnightBoard board = new KnightBoard(10,10);
   // //  System.out.println(board.countSolutions(0,0));
   //   System.out.println(board);
