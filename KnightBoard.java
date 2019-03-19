@@ -90,13 +90,13 @@ public class KnightBoard{
       return solveH(startingRow, startingCol, 1);
     }
 
-  private boolean solveH(int row, int col, int moveNumber){
-    if (moveNumber == area + 1){
+  private boolean solveH(int row, int col, int movenumber){
+    if (movenumber == area + 1){
       return true;
     }
     for (int i = 0; i < 8; i++){
-      if (addKnights(row, col, moveNumber)){
-        if (solveH(row + posXmove[i], col + posYmove[i], moveNumber + 1)){
+      if (addKnights(row, col, movenumber)){
+        if (solveH(row + posXmove[i], col + posYmove[i], movenumber + 1)){
             return true;
           }
         removeKnights(row, col);
@@ -133,100 +133,72 @@ public class KnightBoard{
       return count;
   }
 
+//// optimization;
+
   public void optsolve(int row, int col, int movenumber){
-    // ArrayList<> pmoves = new ArrayList<>();
-    // for(int i = 0; i < 8; i++){
-    //     if (!(row < 0 || col < 0 || row >= board.length || col >= board[0].length)){
-    //       int[] holder = new int[3];
-    //       holder[0] = row;
-    //       holder[1] = col;
-    //       holder[2] =
-    //       pmoves.add(holder);
-    //     }
-    //     else{
-    //       holder[2] =
-    //       pmoves.add(holder);
-    //     }
-    // }
-    //
-    // for(int j = 0; j < pmoves.size(); j++){
-    //   pmoves.get(i)[2] =
-    // }
-    // if ()
-    // // 2 3 4 3 2     2 0 2
-    // // 3 4 6 4 3     2 0 2
-    // // 4 6 8 6 4     2 0 2
-    // // 3 4 6 4 3
-    // // 2 3 4 3 2
+    return ;
   }
 
-    private String toStringopt(int[][] board){
-      String result = "";
-      for(int i = 0; i < board.length; i++){
-        for(int j = 0; j < board[0].length; j++){
-          int count = 0;
-          for (int k = 0; k < 8; k++){
-            int row = i;
-            int col = j;
-            if (!(row < 0 || col < 0 || row >= board.length || col >= board[0].length)){
-              count++;
-            }
-          }
-          result += count;
-        }
-        result += "\n";
-      }
-      return result;
+  public void optsolveH(int row, int col){
+    // ArrayList<Integer> pmoves = new ArrayList<Integer>();
+    // int[] holder = new int[3];
+    // for(int i = 0; i < 8; i++){
+    //   int orow = row + posXmove[i];
+    //   int ocol = col + posYmove[i];
+    //
+    //   board[orow][ocol]
+    return ;
+  }
+
+    // // 2 3 4 3 2     2 2 2     2 3 3 2
+    // // 3 4 6 4 3     2 0 2     3 4 4 2
+    // // 4 6 8 6 4     2 2 2     3 4 4 2
+    // // 3 4 6 4 3               2 3 3 2
+    // // 2 3 4 3 2
+
+    private String fillout(int[][] arr){
+
+      return "";
     }
 
     public static void sort(int[] ary){
-      for(int i = 0; i < ary.length; i++){
-        int target = ary[i];
-        int t_idx = i;
-        for (int j = i; j < ary.length; j++){
-          if (ary[j] < target){
-            target = ary[j];
-            t_idx = j;
-          }
-        }
-          ary[t_idx] = ary[i];
-          ary[i] = target;
-      }
+      return;
     }
 
-    public static void runTest(int i){
-      KnightBoard b;
-      int[]m =   {4,5,5,5,5};
-      int[]n =   {4,5,4,5,5};
-      int[]startx = {0,0,0,1,2};
-      int[]starty = {0,0,0,1,2};
-      int[]answers = {0,304,32,56,64};
-      if(i >= 0 ){
-        try{
-          int correct = answers[i];
-          b = new KnightBoard(m[i%m.length],n[i%m.length]);
-
-          int ans  = b.countSolutions(startx[i],starty[i]);
-
-          if(correct==ans){
-            System.out.println("PASS board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans);
-          }else{
-            System.out.println("FAIL board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans+" vs "+correct);
-          }
-        }catch(Exception e){
-          System.out.println("FAIL Exception case: "+i);
-
-        }
-      }
-    }
-
-
-   public static void main(String[] args){
+    public static void main(String[] args){
      // for (int i = 0; i < 5; i++){
      //   runTest(i);
      // }
-     KnightBoard board = new KnightBoard(3,4);
+     KnightBoard board = new KnightBoard(5,5);
      System.out.println(board.solve(0,0));
      System.out.println(board);
   }
+
+
+  // public static void runTest(int i){
+  //   KnightBoard b;
+  //   int[]m =   {4,5,5,5,5};
+  //   int[]n =   {4,5,4,5,5};
+  //   int[]startx = {0,0,0,1,2};
+  //   int[]starty = {0,0,0,1,2};
+  //   int[]answers = {0,304,32,56,64};
+  //   if(i >= 0 ){
+  //     try{
+  //       int correct = answers[i];
+  //       b = new KnightBoard(m[i%m.length],n[i%m.length]);
+  //
+  //       int ans  = b.countSolutions(startx[i],starty[i]);
+  //
+  //       if(correct==ans){
+  //         System.out.println("PASS board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans);
+  //       }else{
+  //         System.out.println("FAIL board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans+" vs "+correct);
+  //       }
+  //     }catch(Exception e){
+  //       System.out.println("FAIL Exception case: "+i);
+  //
+  //     }
+  //   }
+  // }
+
 }
