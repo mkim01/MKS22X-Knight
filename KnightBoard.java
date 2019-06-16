@@ -158,6 +158,8 @@ public class KnightBoard{
     public String fillout(){
       for(int i = 0; i < optboard.length; i++){
         for(int j = 0; j < optboard[0].length; j++){
+          //initialize the optboard with 8 moves and change depends on the condition
+          optboard[i][j] = 8;
           //positions which knight can move to 2 possible ways
           if ((i == 0 && j == optboard[i].length - 1) || (i == optboard.length -1 && j == 0)
           || (i == optboard.length - 1 && j == optboard[i].length - 1) || (i == 0 && j == 0)){
@@ -169,9 +171,14 @@ public class KnightBoard{
           || (i == 1 && j == optboard[i].length -1) || (i == 1 && j == 0) || (i == 0 && j == 1)){
             optboard[i][j] = 3;
           }
+          //positions which knight can move to 4 possible ways
           if((i == 1 && j == optboard[i].length - 2) || (i == optboard.length - 2 && j == optboard[i].length - 2)
           ||(i == optboard.length - 1 || j == optboard[i].length - 1)  || (i == optboard.length - 2 && j == 1)){
             optboard[i][j] = 4;
+          }
+          //positions which knight can move to 6 possible ways
+          if(i == 1 || j == 1 || i == optboard.length - 2|| j == optboard[i].length - 2){
+            optboard[i][j] = 6;
           }
       }
     }
