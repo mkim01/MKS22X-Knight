@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 public class KnightBoard{
   private int[][] board;
-  private int[][] optimized;
+  private int[][] optboard;
   private int area;
   private int[] posXmove = {1, -1, -2, -2, -1,  1, 2,  2};
   private int[] posYmove = {2,  2,  1, -1, -2, -2, 1, -1};
@@ -125,7 +125,6 @@ public class KnightBoard{
       else{
         for(int i = 0; i < 8; i++){
             count += countH(row + posXmove[i], col + posYmove[i], moveNumber + 1);
-    //        removeKnights(row + posXmove[i], col + posYmove[i]);
           }
         }
         removeKnights(row,col);
@@ -134,7 +133,6 @@ public class KnightBoard{
   }
 
 //// optimization;
-
   public void optsolve(int row, int col, int movenumber){
     return ;
   }
@@ -150,14 +148,28 @@ public class KnightBoard{
     return ;
   }
 
-    // // 2 3 4 3 2     2 2 2     2 3 3 2
-    // // 3 4 6 4 3     2 0 2     3 4 4 2
-    // // 4 6 8 6 4     2 2 2     3 4 4 2
-    // // 3 4 6 4 3               2 3 3 2
-    // // 2 3 4 3 2
-
-    private String fillout(int[][] arr){
-
+    // // 2 3 4 3 2     2 2 2     2 3 3 2    2 3 4 4 3 2
+    // // 3 4 6 4 3     2 0 2     3 4 4 2    3 4 6 6 4 3
+    // // 4 6 8 6 4     2 2 2     3 4 4 2    4 6 8 8 6 4
+    // // 3 4 6 4 3               2 3 3 2    4 6 8 8 6 4
+    // // 2 3 4 3 2                          3 4 6 6 4 3
+    //                                       2 3 4 4 3 2
+    // possible moves : 2, 3, 4, 6, 8
+    public String fillout(){
+      for(int i = 0; i < optboard.length; i++){
+        for(int j = 0; j < optboard[0].length; j++){
+          //positions which knight can move to 2 possible ways
+          if ((i == 0 && j == optboard[i].length - 1) || (j == 0 && i == optboard.length -1)){
+            optboard[i][j] = 2;
+          }
+          //positions which knight can move to 3 possible ways
+          if ((i == optboard.length - 2 && j == 0) || (i == optboard.length - 2 && j == optboard[i].length -1)
+          || (i == optboard.length - 1 && j == optboard[j].length - 2) || (i == 0 && j == optboard[i].length -2)
+          || (i == 1 && j == optboard[i].length -1)){
+            optboard[i][j] = 3;
+          }
+        }
+      }
       return "";
     }
 
@@ -165,40 +177,41 @@ public class KnightBoard{
       return;
     }
 
-    public static void main(String[] args){
-     // for (int i = 0; i < 5; i++){
-     //   runTest(i);
-     // }
-     KnightBoard board = new KnightBoard(5,5);
-     System.out.println(board.solve(0,0));
-     System.out.println(board);
+  public static void runTest(int i){
+    KnightBoard b;
+    int[]m =   {4,5,5,5,5};
+    int[]n =   {4,5,4,5,5};
+    int[]startx = {0,0,0,1,2};
+    int[]starty = {0,0,0,1,2};
+    int[]answers = {0,304,32,56,64};
+    if(i >= 0 ){
+      try{
+        int correct = answers[i];
+        b = new KnightBoard(m[i%m.length],n[i%m.length]);
+
+        int ans  = b.countSolutions(startx[i],starty[i]);
+
+        if(correct==ans){
+          System.out.println("PASS board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans);
+        }else{
+          System.out.println("FAIL board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans+" vs "+correct);
+        }
+      }catch(Exception e){
+        System.out.println("FAIL Exception case: "+i);
+
+      }
+    }
   }
 
+  public static void main(String[] args){
+   // for (int i = 0; i < 5; i++){
+   //   runTest(i);
+   // }
+   KnightBoard board = new KnightBoard(5,5);
+   System.out.println(board.solve(0,0));
+   System.out.println(board);
+}
 
-  // public static void runTest(int i){
-  //   KnightBoard b;
-  //   int[]m =   {4,5,5,5,5};
-  //   int[]n =   {4,5,4,5,5};
-  //   int[]startx = {0,0,0,1,2};
-  //   int[]starty = {0,0,0,1,2};
-  //   int[]answers = {0,304,32,56,64};
-  //   if(i >= 0 ){
-  //     try{
-  //       int correct = answers[i];
-  //       b = new KnightBoard(m[i%m.length],n[i%m.length]);
-  //
-  //       int ans  = b.countSolutions(startx[i],starty[i]);
-  //
-  //       if(correct==ans){
-  //         System.out.println("PASS board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans);
-  //       }else{
-  //         System.out.println("FAIL board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans+" vs "+correct);
-  //       }
-  //     }catch(Exception e){
-  //       System.out.println("FAIL Exception case: "+i);
-  //
-  //     }
-  //   }
-  // }
+
 
 }
