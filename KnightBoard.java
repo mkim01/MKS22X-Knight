@@ -159,19 +159,24 @@ public class KnightBoard{
       for(int i = 0; i < optboard.length; i++){
         for(int j = 0; j < optboard[0].length; j++){
           //positions which knight can move to 2 possible ways
-          if ((i == 0 && j == optboard[i].length - 1) || (j == 0 && i == optboard.length -1)){
+          if ((i == 0 && j == optboard[i].length - 1) || (i == optboard.length -1 && j == 0)
+          || (i == optboard.length - 1 && j == optboard[i].length - 1) || (i == 0 && j == 0)){
             optboard[i][j] = 2;
           }
           //positions which knight can move to 3 possible ways
           if ((i == optboard.length - 2 && j == 0) || (i == optboard.length - 2 && j == optboard[i].length -1)
           || (i == optboard.length - 1 && j == optboard[j].length - 2) || (i == 0 && j == optboard[i].length -2)
-          || (i == 1 && j == optboard[i].length -1)){
+          || (i == 1 && j == optboard[i].length -1) || (i == 1 && j == 0) || (i == 0 && j == 1)){
             optboard[i][j] = 3;
           }
-        }
+          if((i == 1 && j == optboard[i].length - 2) || (i == optboard.length - 2 && j == optboard[i].length - 2)
+          ||(i == optboard.length - 1 || j == optboard[i].length - 1)  || (i == optboard.length - 2 && j == 1)){
+            optboard[i][j] = 4;
+          }
       }
-      return "";
     }
+      return "";
+  }
 
     public static void sort(int[] ary){
       return;
