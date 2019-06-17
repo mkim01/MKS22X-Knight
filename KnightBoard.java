@@ -3,8 +3,8 @@ public class KnightBoard{
   private int[][] board;
   private int[][] optboard;
   private int area;
-  private int[] posXmove = {1, -1, -2, -2, -1,  1, 2,  2};
-  private int[] posYmove = {2,  2,  1, -1, -2, -2, 1, -1};
+  private int[] posXmove = {-2, -2, -1,  1, 2,  2, 1, -1};
+  private int[] posYmove = {-1,  1,  2,  2, 1, -1, -2, -2};
 
   private class Block implements Comparable<Block>{
     public int r;
@@ -63,15 +63,12 @@ public class KnightBoard{
   }
 
   private boolean addKnights(int row, int col, int movenumber){
-    if (row < 0 || col < 0 || row >= board.length || col >= board[0].length){
+    if (row < 0 || col < 0 || row >= board.length || col >= board[0].length || board[row][col] != 0){
       return false;
     }
-    if (board[row][col] != 0){
-      return false;
-    }
-    board[row][col] = 0;
+    board[row][col] = movenumber;
     for(int i = 0; i < 8; i++){
-      if(validmove(row+posXmove[i],col+posYmove[i]) && optboard[row+ posXmove[i]][col+ posYmove[i]]==0 ){
+      if(validmove(row+posXmove[i],col+posYmove[i]) && board[row+ posXmove[i]][col+ posYmove[i]] == 0 ){
         optboard[row][col] = 0;
         optboard[row+posXmove[i]][col+posYmove[i]]--;
       }
@@ -80,16 +77,14 @@ public class KnightBoard{
   }
 
   private boolean removeKnights(int row, int col){
-    if (row < 0 || col < 0 || row >= board.length || col >= board[0].length){
-      return false;
-    }
+    board[row][col] = 0;
     for(int i = 0; i < 8; i++){
-      if(validmove(row+posXmove[i],col+posYmove[i]) && optboard[row+ posXmove[i]][col+ posYmove[i]]==0 ){
+      if(validmove(row+posXmove[i],col+posYmove[i]) && board[row+ posXmove[i]][col+ posYmove[i]] == 0 ){
         optboard[row][col] ++;
         optboard[row+posXmove[i]][col+posYmove[i]]++;
       }
     }
-    return false;
+    return true;
   }
 
   public boolean checkstate(){
@@ -111,9 +106,9 @@ public class KnightBoard{
      if (startingRow < 0 || startingCol < 0 || startingRow >= board[0].length || startingCol >= board.length){
        throw new IllegalArgumentException();
      }
-     if (!checkstate()){
-       throw new IllegalStateException();
-     }
+     // if (!checkstate()){
+     //   throw new IllegalStateException();
+     // }
      addKnights(startingRow, startingCol, 1);
       return optsolveH(startingRow, startingCol,2);
     }
@@ -130,7 +125,7 @@ public class KnightBoard{
           return true;
         }
         ArrayList<Block> blocks = new ArrayList<Block>();
-        for(int i = 0;i < posXmove.length; i++){
+        for(int i = 0;i <8; i++){
           Block b = new Block(row + posXmove[i],col + posYmove[i]);
           if (validmove(b.r,b.c) && board[b.r][b.c] == 0){
             blocks.add(b);
@@ -239,27 +234,26 @@ public class KnightBoard{
     if (startingRow < 0 || startingCol < 0 || startingRow >= board[0].length || startingCol >= board.length){
       throw new IllegalArgumentException();
     }
-    if (!checkstate()){
-      throw new IllegalStateException();
-    }
-    return countH(startingRow, startingCol, 1);
+    // if (!checkstate()){
+    //   throw new IllegalStateException();
+    // }
+    if (board[0][0] != 0) throw new IllegalStateException();
+    addKnights(startingRow, startingCol, 1);
+    return countH(startingRow, startingCol, 2);
   }
 
-  private int countH(int row, int col, int moveNumber){
-    int count = 0;
-    if(addKnights(row,col,moveNumber)){
-      if (moveNumber == area){
-        removeKnights(row,col);
-        return 1;
-      }
-      else{
-        for(int i = 0; i < 8; i++){
-            count += countH(row + posXmove[i], col + posYmove[i], moveNumber + 1);
-          }
-        }
-        removeKnights(row,col);
+  private int countH(int row, int col, int movenumber){
+    if(movenumber > board.length * board[0].length) {
+      return 1;
     }
-      return count;
+    int count = 0;
+    for(int i = 0;i < 8;i++){
+      if(addKnights(row+posXmove[i],col+posYmove[i],movenumber)){
+        count+= countH(row+posXmove[i],col+posYmove[i],movenumber+1);
+        removeKnights(row+posXmove[i],col+posYmove[i]);
+      }
+    }
+    return count;
   }
 
 
