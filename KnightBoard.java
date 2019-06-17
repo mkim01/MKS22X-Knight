@@ -6,7 +6,6 @@ public class KnightBoard{
   private int[] posXmove = {1, -1, -2, -2, -1,  1, 2,  2};
   private int[] posYmove = {2,  2,  1, -1, -2, -2, 1, -1};
 
-
   private class Block implements Comparable<Block>{
     public int r;
     public int c;
@@ -31,7 +30,7 @@ public class KnightBoard{
       for(int j = 0; j< startingCols; j++){
         board[i][j] = 0;
         optboard[i][j] = 0;
-        for (int k =0; k < posXmove.length; k++){
+        for (int k =0; k < 8; k++){
           if (i + posXmove[k]>= 0 && i + posXmove[k] < board.length && j + posYmove[k] >= 0 && j + posYmove[k] < board.length){
             optboard[i][j]++;
         }
@@ -70,19 +69,25 @@ public class KnightBoard{
     if (board[row][col] != 0){
       return false;
     }
-    else{
-      board[row][col] = movenumber;
-      return true;
+    board[row][col] = 0;
+    for(int i = 0; i < 8; i++){
+      if(validmove(row+posXmove[i],col+posYmove[i]) && optboard[row+ posXmove[i]][col+ posYmove[i]]==0 ){
+        optboard[row][col] = 0;
+        optboard[row+posXmove[i]][col+posYmove[i]]--;
       }
     }
+    return true;
+  }
 
   private boolean removeKnights(int row, int col){
     if (row < 0 || col < 0 || row >= board.length || col >= board[0].length){
       return false;
     }
-    if (board[row][col] != 0){
-      board[row][col] = 0;
-      return true;
+    for(int i = 0; i < 8; i++){
+      if(validmove(row+posXmove[i],col+posYmove[i]) && optboard[row+ posXmove[i]][col+ posYmove[i]]==0 ){
+        optboard[row][col] ++;
+        optboard[row+posXmove[i]][col+posYmove[i]]++;
+      }
     }
     return false;
   }
@@ -120,6 +125,31 @@ public class KnightBoard{
       //   return optsolveH(row,col);
       // }
 
+      public boolean optsolveH(int row, int col, int movenumber){
+        if(movenumber > board.length * board[0].length) {
+          return true;
+        }
+        ArrayList<Block> blocks = new ArrayList<Block>();
+        for(int i = 0;i < posXmove.length; i++){
+          Block b = new Block(row + posXmove[i],col + posYmove[i]);
+          if (validmove(b.r,b.c) && board[b.r][b.c] == 0){
+            blocks.add(b);
+        }
+      }
+        Collections.sort(blocks);
+
+        for(int k = 0; k < blocks.size(); k++){
+          if (addKnights(blocks.get(k).r,blocks.get(k).c, movenumber)){
+            if (optsolveH(blocks.get(k).r,blocks.get(k).c, movenumber + 1)){
+              return true;
+            }
+            removeKnights(blocks.get(k).r, blocks.get(k).c);
+          }
+        }
+        removeKnights(row,col);
+        return false;
+    }
+
 
         // // 2 3 4 3 2     2 2 2     2 3 3 2    2 3 4 4 3 2
         // // 3 4 6 4 3     2 0 2     3 4 4 2    3 4 6 6 4 3
@@ -129,12 +159,12 @@ public class KnightBoard{
         //                                       2 3 4 4 3 2
         // possible moves : 2, 3, 4, 6, 8
 
-      //   private boolean validmove(int r, int c){
-      //     if (r >= 0 && r < board.length && c>=0 && c < board[0].length){
-      //       return true;
-      //     }
-      //     return false;
-      //   }
+        private boolean validmove(int r, int c){
+          if (r >= 0 && r < board.length && c>=0 && c < board[0].length){
+            return true;
+          }
+          return false;
+        }
       //
       //   public String fillout(){
       //     for (int i = 0; i < optboard.length; i++){
