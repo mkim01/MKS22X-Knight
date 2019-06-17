@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 public class KnightBoard{
   private int[][] board;
   private int[][] optboard;
@@ -6,18 +6,40 @@ public class KnightBoard{
   private int[] posXmove = {1, -1, -2, -2, -1,  1, 2,  2};
   private int[] posYmove = {2,  2,  1, -1, -2, -2, 1, -1};
 
+
+  private class Block implements Comparable<Block>{
+    public int r;
+    public int c;
+    public Block(int r, int c){
+      this.r = r;
+      this.c = c;
+    }
+
+    public int compareTo(Block other){
+      return optboard[r][c] - optboard[other.r][other.c];
+    }
+  }
+
   public KnightBoard(int startingRows,int startingCols){
     if (startingRows <= 0 || startingCols <= 0){
       throw new IllegalStateException();
     }
     board = new int [startingRows][startingCols];
+    optboard = new int[startingRows][startingCols];
+    // fillout();
     for(int i = 0; i < startingRows; i++){
       for(int j = 0; j< startingCols; j++){
         board[i][j] = 0;
+        optboard[i][j] = 0;
+        for (int k =0; k < posXmove.length; k++){
+          if (i + posXmove[k]>= 0 && i + posXmove[k] < board.length && j + posYmove[k] >= 0 && j + posYmove[k] < board.length){
+            optboard[i][j]++;
+        }
+       }
       }
-    }
-    area  = board.length * board[0].length;
   }
+}
+
 
   public String toString(){
     String result = "";
@@ -87,8 +109,86 @@ public class KnightBoard{
      if (!checkstate()){
        throw new IllegalStateException();
      }
-      return solveH(startingRow, startingCol, 1);
+     addKnights(startingRow, startingCol, 1);
+      return optsolveH(startingRow, startingCol,2);
     }
+
+    //// optimization;
+      // public boolean optimzationsolve(int row, int col, int movenumber){
+      //   fillout();
+      //   board[row][col] = 1;
+      //   return optsolveH(row,col);
+      // }
+
+
+        // // 2 3 4 3 2     2 2 2     2 3 3 2    2 3 4 4 3 2
+        // // 3 4 6 4 3     2 0 2     3 4 4 2    3 4 6 6 4 3
+        // // 4 6 8 6 4     2 2 2     3 4 4 2    4 6 8 8 6 4
+        // // 3 4 6 4 3               2 3 3 2    4 6 8 8 6 4
+        // // 2 3 4 3 2                          3 4 6 6 4 3
+        //                                       2 3 4 4 3 2
+        // possible moves : 2, 3, 4, 6, 8
+
+      //   private boolean validmove(int r, int c){
+      //     if (r >= 0 && r < board.length && c>=0 && c < board[0].length){
+      //       return true;
+      //     }
+      //     return false;
+      //   }
+      //
+      //   public String fillout(){
+      //     for (int i = 0; i < optboard.length; i++){
+      //       for (int j = 0; j < optboard[0].length; j++){
+      //         board[i][j] = 0;
+      //       }
+      //     }
+      //
+      //     String res = "";
+      //     for(int i = 0; i < optboard.length; i++){
+      //       for(int j = 0; j < optboard[0].length; j++){
+      //         //initialize the optboard with 8 moves and change depends on the condition
+      //         optboard[i][j] = 8;
+      //         //positions which knight can move to 2 possible ways
+      //         if ((i == 0 && j == optboard[i].length - 1) || (i == optboard.length -1 && j == 0)
+      //         || (i == optboard.length - 1 && j == optboard[i].length - 1) || (i == 0 && j == 0)){
+      //           optboard[i][j] = 2;
+      //         }
+      //         //positions which knight can move to 3 possible ways
+      //         if ((i == optboard.length - 2 && j == 0) || (i == optboard.length - 2 && j == optboard[i].length -1)
+      //         || (i == optboard.length - 1 && j == optboard[j].length - 2) || (i == 0 && j == optboard[i].length -2)
+      //         || (i == 1 && j == optboard[i].length -1) || (i == 1 && j == 0) || (i == 0 && j == 1)){
+      //           optboard[i][j] = 3;
+      //         }
+      //         //positions which knight can move to 4 possible ways
+      //         if((i == 1 && j == optboard[i].length - 2) || (i == optboard.length - 2 && j == optboard[i].length - 2)
+      //         ||(i == optboard.length - 1 || j == optboard[i].length - 1)  || (i == optboard.length - 2 && j == 1)){
+      //           optboard[i][j] = 4;
+      //         }
+      //         //positions which knight can move to 6 possible ways
+      //         if(i == 1 || j == 1 || i == optboard.length - 2|| j == optboard[i].length - 2){
+      //           optboard[i][j] = 6;
+      //         }
+      //         res += " " + optboard[i][j];
+      //     }
+      //     res += "\n";
+      //   }
+      //     return res;
+      // }
+
+      public String toStringopt(){
+        String ans = "";
+        for(int i = 0; i < optboard.length; i++){
+          for(int j = 0; j < optboard[i].length; j++){
+            if (optboard[i][j]< 10){
+              ans += " "+optboard[i][i]+" ";
+            }
+            else {
+              ans+= optboard[i][j]+" ";
+            }
+          }
+        }
+        return ans;
+      }
 
   private boolean solveH(int row, int col, int movenumber){
     if (movenumber == area + 1){
@@ -132,62 +232,6 @@ public class KnightBoard{
       return count;
   }
 
-//// optimization;
-  public void optsolve(int row, int col, int movenumber){
-    return ;
-  }
-
-  public void optsolveH(int row, int col){
-    // ArrayList<Integer> pmoves = new ArrayList<Integer>();
-    // int[] holder = new int[3];
-    // for(int i = 0; i < 8; i++){
-    //   int orow = row + posXmove[i];
-    //   int ocol = col + posYmove[i];
-    //
-    //   board[orow][ocol]
-    return ;
-  }
-
-    // // 2 3 4 3 2     2 2 2     2 3 3 2    2 3 4 4 3 2
-    // // 3 4 6 4 3     2 0 2     3 4 4 2    3 4 6 6 4 3
-    // // 4 6 8 6 4     2 2 2     3 4 4 2    4 6 8 8 6 4
-    // // 3 4 6 4 3               2 3 3 2    4 6 8 8 6 4
-    // // 2 3 4 3 2                          3 4 6 6 4 3
-    //                                       2 3 4 4 3 2
-    // possible moves : 2, 3, 4, 6, 8
-    public String fillout(){
-      for(int i = 0; i < optboard.length; i++){
-        for(int j = 0; j < optboard[0].length; j++){
-          //initialize the optboard with 8 moves and change depends on the condition
-          optboard[i][j] = 8;
-          //positions which knight can move to 2 possible ways
-          if ((i == 0 && j == optboard[i].length - 1) || (i == optboard.length -1 && j == 0)
-          || (i == optboard.length - 1 && j == optboard[i].length - 1) || (i == 0 && j == 0)){
-            optboard[i][j] = 2;
-          }
-          //positions which knight can move to 3 possible ways
-          if ((i == optboard.length - 2 && j == 0) || (i == optboard.length - 2 && j == optboard[i].length -1)
-          || (i == optboard.length - 1 && j == optboard[j].length - 2) || (i == 0 && j == optboard[i].length -2)
-          || (i == 1 && j == optboard[i].length -1) || (i == 1 && j == 0) || (i == 0 && j == 1)){
-            optboard[i][j] = 3;
-          }
-          //positions which knight can move to 4 possible ways
-          if((i == 1 && j == optboard[i].length - 2) || (i == optboard.length - 2 && j == optboard[i].length - 2)
-          ||(i == optboard.length - 1 || j == optboard[i].length - 1)  || (i == optboard.length - 2 && j == 1)){
-            optboard[i][j] = 4;
-          }
-          //positions which knight can move to 6 possible ways
-          if(i == 1 || j == 1 || i == optboard.length - 2|| j == optboard[i].length - 2){
-            optboard[i][j] = 6;
-          }
-      }
-    }
-      return "";
-  }
-
-    public static void sort(int[] ary){
-      return;
-    }
 
   public static void runTest(int i){
     KnightBoard b;
